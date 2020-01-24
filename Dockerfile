@@ -40,28 +40,39 @@ RUN apt-get update && apt-get install -y --force-yes \
 	    xterm \
 	    xz-utils \
 	    vim \
-	    zlib1g-dev
+	    zlib1g-dev \
+      python3-pyelftools
+
+RUN apt-get install -y python-pycryptodome \
+      qemu python3-pycryptodome
+
+RUN apt install -y libssl-dev wget cpio rsync \
+      python-crypto python3-crypto
+
+RUN apt install -y acpica-tools 
+
+RUN apt install firefox -y
 
 # Download repo
-RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
-RUN chmod a+x /bin/repo
-
-RUN useradd --create-home --shell /bin/bash optee
-RUN echo 'optee:optee' | chpasswd
-
-USER optee
+# RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
+# RUN chmod a+x /bin/repo
+# 
+# RUN useradd --create-home --shell /bin/bash optee
+# RUN echo 'optee:optee' | chpasswd
+# 
+# USER optee
 
 # Configure git so repo won't complain later on
-RUN git config --global user.name "OP-TEE"
-RUN git config --global user.email "op-tee@linaro.org"
-
-RUN mkdir -p /home/optee/qemu-optee
-WORKDIR /home/optee/qemu-optee
-
-RUN /bin/repo init -u https://github.com/OP-TEE/manifest.git
-RUN /bin/repo sync -j3
-
-WORKDIR /home/optee/qemu-optee/build
-RUN make toolchains -j3
+# RUN git config --global user.name "OP-TEE"
+# RUN git config --global user.email "op-tee@linaro.org"
+# 
+# RUN mkdir -p /home/optee/qemu-optee
+# WORKDIR /home/optee/qemu-optee
+# 
+# RUN /bin/repo init -u https://github.com/OP-TEE/manifest.git
+# RUN /bin/repo sync -j3
+# 
+# WORKDIR /home/optee/qemu-optee/build
+# RUN make toolchains -j3
 
 #RUN make -j4 all run
